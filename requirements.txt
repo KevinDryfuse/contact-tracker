@@ -1,0 +1,7 @@
+flask==1.1.2
+flask-wtf==0.14.3
+flask-oidc==1.4.0
+okta==0.0.4
+flask-sqlalchemy==2.4.4
+flask-migrate==2.5.3
+python-dotenv==0.14.0

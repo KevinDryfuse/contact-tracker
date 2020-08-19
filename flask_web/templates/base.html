@@ -1,0 +1,14 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Contact Tracker</title>
+      {% else %}
+      <title>Contact Tracker</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>Contract Tracker: <a href="/index">Main</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
