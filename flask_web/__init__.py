@@ -38,7 +38,7 @@ def create_app(config_class=Config):
     from flask_web.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    remove_secrets_file(secrets_file)
+    # remove_secrets_file(secrets_file)
 
     return app
 
