@@ -1,5 +1,6 @@
-import base64
 import json
+import os
+import uuid
 
 from flask import Flask
 from config import Config
@@ -14,7 +15,9 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
+    secrets_file = create_secrets_file()
+
+    app.config["OIDC_CLIENT_SECRETS"] = secrets_file
     app.config["OIDC_COOKIE_SECURE"] = False
     app.config["OIDC_CALLBACK_ROUTE"] = "/oidc/callback"
     app.config["OIDC_SCOPES"] = ["openid", "email", "profile"]
@@ -35,4 +38,33 @@ def create_app(config_class=Config):
     from flask_web.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    remove_secrets_file(secrets_file)
+
     return app
+
+
+def remove_secrets_file(secrets_file):
+    os.remove(secrets_file)
+
+
+def create_secrets_file():
+
+    appDict = {
+      "web": {
+        "client_id": environ.get("CLIENT_ID"),
+        "client_secret": environ.get("CLIENT_SECRET"),
+        "auth_uri": environ.get("AUTH_URI"),
+        "token_uri": environ.get("TOKEN_URI"),
+        "issuer": environ.get("ISSUER"),
+        "userinfo_uri": environ.get("USERINFO_URI"),
+        "redirect_uris": [
+            environ.get("REDIRECT_URI")
+        ]
+      }
+    }
+
+    secrets_file = str(uuid.uuid4()) + ".json"
+    with open(secrets_file, "w") as json_file:
+        json.dump(appDict, json_file)
+
+    return secrets_file
