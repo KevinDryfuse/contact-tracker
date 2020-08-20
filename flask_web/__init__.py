@@ -15,7 +15,6 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
-    # app.config["OIDC_CLIENT_SECRETS"] = base64.b64decode("eyJ3ZWIiOnsiY2xpZW50X2lkIjoiMG9hcDZuN2NmNDc4cG9TTGk0eDYiLCJjbGllbnRfc2VjcmV0IjoiVHBGSHk4MVJZcDVkaGFwQmtpOTluQy1fZ3FGOEYwYnZsQlcwYWJFTyIsImF1dGhfdXJpIjoiaHR0cHM6Ly9kZXYtNzExODg3Lm9rdGEuY29tL29hdXRoMi9kZWZhdWx0L3YxL2F1dGhvcml6ZSIsInRva2VuX3VyaSI6Imh0dHBzOi8vZGV2LTcxMTg4Ny5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdC92MS90b2tlbiIsImlzc3VlciI6Imh0dHBzOi8vZGV2LTcxMTg4Ny5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsInVzZXJpbmZvX3VyaSI6Imh0dHBzOi8vZGV2LTcxMTg4Ny5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdC91c2VyaW5mbyIsInJlZGlyZWN0X3VyaXMiOlsiaHR0cDovL2xvY2FsaG9zdDo1MDAwL29pZGMvY2FsbGJhY2siXX19")
     app.config["OIDC_COOKIE_SECURE"] = False
     app.config["OIDC_CALLBACK_ROUTE"] = "/oidc/callback"
     app.config["OIDC_SCOPES"] = ["openid", "email", "profile"]
