@@ -63,7 +63,7 @@ def create_secrets_file():
       }
     }
 
-    secrets_file = str(uuid.uuid4()) + ".json"
+    secrets_file = "my_secrets_file.json"
     with open(secrets_file, "w") as json_file:
         json.dump(appDict, json_file)
 
