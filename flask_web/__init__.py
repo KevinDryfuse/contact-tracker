@@ -16,6 +16,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     secrets_file = create_secrets_file()
+    print("Created secrets files at " + secrets_file)
 
     app.config["OIDC_CLIENT_SECRETS"] = secrets_file
     app.config["OIDC_COOKIE_SECURE"] = False
@@ -63,7 +64,7 @@ def create_secrets_file():
       }
     }
 
-    secrets_file = "my_secrets_file.json"
+    secrets_file = "secrets.json"
     with open(secrets_file, "w") as json_file:
         json.dump(appDict, json_file)
 
