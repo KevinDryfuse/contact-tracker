@@ -1,0 +1,23 @@
+{% extends "emptybase.html" %}
+
+{% block content %}
+                  <form class="user" action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.username(class_='form-control form-control-user', type='email', id='exampleInputEmail', placeholder='Enter Email Address...') }}
+                               {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+                         {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password(class_="form-control form-control-user", id="exampleInputPassword", placeholder="Password") }}
+                                {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+                         {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+                        <p>{{ form.submit() }}</p>
+                    </div>
+                  </form>
+{% endblock %}
