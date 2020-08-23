@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField, SelectField
 from wtforms.validators import DataRequired, Length
 
 
@@ -16,3 +16,21 @@ class PostStudent(FlaskForm):
         last_name = StringField('last name', validators=[
             DataRequired(), Length(min=1, max=64)])
         submit = SubmitField('Submit')
+
+
+class PostClassroom(FlaskForm):
+    name = StringField('name', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Submit')
+
+
+class PostAddStudentsToClassroom(FlaskForm):
+    students = SelectMultipleField('Students')
+    submit = SubmitField('Submit')
+
+
+class PostAddStudentsToUser(FlaskForm):
+    students = SelectField('Students')
+    submit = SubmitField('Submit')
+    delete = SubmitField('Remove')
+
