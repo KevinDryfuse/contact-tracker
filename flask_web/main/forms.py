@@ -33,3 +33,19 @@ class PostAddStudentsToUser(FlaskForm):
     students = SelectField('Students')
     submit = SubmitField('Submit')
 
+
+class PostStudentContact(FlaskForm):
+    submit = SubmitField('Submit')
+
+
+class PostContactType(FlaskForm):
+    name = StringField('name', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Submit')
+
+
+class PostServicesOffered(FlaskForm):
+    name = StringField('name', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Submit')
+

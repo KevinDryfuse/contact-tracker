@@ -81,3 +81,21 @@ class Classroom(db.Model):
 
     def __repr__(self):
         return '<Class {}>'.format(self.name)
+
+
+class ContactType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    external_id = db.Column(db.String(36), index=True, unique=True)
+    name = db.Column(db.String(64))
+
+    def __repr__(self):
+        return '<Contact Type {}>'.format(self.name)
+
+
+class ServiceOffered(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    external_id = db.Column(db.String(36), index=True, unique=True)
+    name = db.Column(db.String(64))
+
+    def __repr__(self):
+        return '<Service Offered {}>'.format(self.name)

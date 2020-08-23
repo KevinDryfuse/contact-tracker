@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-xl-6 col-lg-8">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Edit Contact Type</h6>
+            <div class="dropdown no-arrow">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                     aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="/contact_types/{{ contact_type.external_id }}/delete" data-toggle="modal" data-target="#deleteContactTypeModal">Delete Contact Type</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.name(class_="form-control form-control-user", type="text", placeholder='Contact Type') }}
+                    {% for error in form.name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit(class_="btn btn-primary") }}</p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Contact Type Modal-->
+<div class="modal fade" id="deleteContactTypeModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete {{ contact_type.name }}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Confirm" to remove this contact type from the system entirely.  Unless you are 100% sure that you should be
+                doing this, I would hit "Cancel".
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel
+                </button>
+                <a class="btn btn-primary" href="/contact_types/{{ contact_type.external_id }}/delete">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

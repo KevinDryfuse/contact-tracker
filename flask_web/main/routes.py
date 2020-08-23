@@ -6,8 +6,23 @@ from uuid import uuid4
 
 from flask_web import db
 from flask_web.main import bp
-from flask_web.main.forms import Login, PostStudent, PostClassroom, PostAddStudentsToClassroom, PostAddStudentsToUser
-from flask_web.models import Student, User, Classroom
+from flask_web.main.forms import (
+    Login,
+    PostStudent,
+    PostClassroom,
+    PostStudentContact,
+    PostAddStudentsToClassroom,
+    PostAddStudentsToUser,
+    PostContactType,
+    PostServicesOffered
+)
+from flask_web.models import (
+    Student,
+    User,
+    Classroom,
+    ServiceOffered,
+    ContactType
+)
 from flask_login import current_user, login_user, logout_user, login_required
 
 
@@ -16,7 +31,23 @@ from flask_login import current_user, login_user, logout_user, login_required
 @login_required
 def index():
     user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
-    return render_template("index.html", user=user)
+    # form = PostAddStudentsToUser()
+    u = db.session.query(User).filter(User.id == current_user.id).one()
+    s = u.students
+    # available_students = list(set(db.session.query(Student).all()) - set(u.students))
+    # available_students.sort(key=attrgetter('last_name', 'first_name'))
+    # form.students.choices = [(g.id, str(g.id) + " - " + g.last_name + ", " + g.first_name) for g in available_students]
+    # form.students.choices.insert(0, ('', 'Select One'))
+    # if form.validate_on_submit():
+    #     student = db.session.query(Student).filter(Student.id == form.students.data).one()
+    #     u.students.append(student)
+    #     db.session.add(u)
+    #     db.session.commit()
+    #     return redirect(url_for('main.my_students'))
+    #
+    # return render_template("mystudents.html", title='Students', user=user, students=s, form=form)
+    #
+    return render_template("index.html", title='Dashboard', user=user, students=s)
 
 # TODO: Do this later, this is not MVP .. however would like to update user info and update profile pic and stuff
 # @bp.route('/profile', methods=["GET", "POST"])
@@ -198,3 +229,94 @@ def remove_student_from_user(external_id):
     db.session.add(u)
     db.session.commit()
     return redirect(url_for('main.my_students'))
+
+
+@bp.route("/mystudents/<string:external_id>/contact", methods=["GET", "POST"])
+@login_required
+def contact_my_student(external_id):
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    form = PostStudentContact()
+    s = db.session.query(Student).filter(Student.external_id == external_id).one()
+    return render_template("contact_student.html", title='Log Student Contact', user=user, student=s, form=form)
+
+
+@bp.route("/contact_types", methods=["GET", 'POST'])
+@login_required
+def contact_types():
+    form = PostContactType()
+    if form.validate_on_submit():
+        uuid = str(uuid4())
+        contact_type = ContactType(external_id=uuid, name=form.name.data)
+        db.session.add(contact_type)
+        db.session.commit()
+        return redirect(url_for('main.contact_types'))
+
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    c = ContactType.query.all()
+    return render_template("contact_types.html", title='Contact Types', user=user, contact_types=c, form=form)
+
+
+@bp.route("/services_offered", methods=["GET", 'POST'])
+@login_required
+def services_offered():
+    form = PostServicesOffered()
+    if form.validate_on_submit():
+        uuid = str(uuid4())
+        service_offered = ServiceOffered(external_id=uuid, name=form.name.data)
+        db.session.add(service_offered)
+        db.session.commit()
+        return redirect(url_for('main.services_offered'))
+
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    s = ServiceOffered.query.all()
+    return render_template("services_offered.html", title='Services Offered', user=user, services_offered=s, form=form)
+
+
+@bp.route('/services_offered/<string:external_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_services_offered(external_id):
+    form = PostServicesOffered()
+    if form.validate_on_submit():
+        db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).update({ServiceOffered.name: form.name.data}, synchronize_session=False)
+        db.session.commit()
+        return redirect(url_for('main.services_offered'))
+
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    s = db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).one()
+    form.name.data = s.name
+
+    return render_template("edit_service_offered.html", title='Edit Offered Service', user=user, service_offered=s, form=form)
+
+
+@bp.route('/services_offered/<string:external_id>/delete', methods=['GET'])
+@login_required
+def delete_services_offered(external_id):
+    # Note, I don't want a delete endpoint like this really ... but I'm not sure how I want to handle it yet.
+    db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).delete()
+    db.session.commit()
+    return redirect(url_for('main.services_offered'))
+
+
+@bp.route('/contact_types/<string:external_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_contact_types(external_id):
+    form = PostContactType()
+    if form.validate_on_submit():
+        db.session.query(ContactType).filter(ContactType.external_id == external_id).update({ServiceOffered.name: form.name.data}, synchronize_session=False)
+        db.session.commit()
+        return redirect(url_for('main.contact_types'))
+
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    c = db.session.query(ContactType).filter(ContactType.external_id == external_id).one()
+    form.name.data = c.name
+
+    return render_template("edit_contact_type.html", title='Edit Contact Type', user=user, contact_type=c, form=form)
+
+
+@bp.route('/contact_types/<string:external_id>/delete', methods=['GET'])
+@login_required
+def delete_contact_types(external_id):
+    # Note, I don't want a delete endpoint like this really ... but I'm not sure how I want to handle it yet.
+    db.session.query(ContactType).filter(ContactType.external_id == external_id).delete()
+    db.session.commit()
+    return redirect(url_for('main.contact_types'))
