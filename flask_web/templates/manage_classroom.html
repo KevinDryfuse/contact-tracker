@@ -5,7 +5,7 @@
     <div class="col-xl-6 col-lg-8">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Add Student To My List</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Add Student To Class</h6>
             </div>
             <!-- Card Body -->
             <div class="card-body">
@@ -24,7 +24,7 @@
     <div class="col-xl-6 col-lg-8">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">My Students</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Students in {{ classroom.name }}</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -48,10 +48,9 @@
                         <tr>
                             <td>{{ student.first_name }}</td>
                             <td>{{ student.last_name }}</td>
-                            <td><a href="/mystudents/{{ student.external_id }}/remove" class="btn btn-primary btn-block"
+                            <td><a href="/classes/{{ classroom.external_id }}/students/{{ student.external_id }}/remove" class="btn btn-primary btn-block"
                                    data-toggle="modal" data-target="#remove{{ student.external_id }}Modal">Remove</a>
                             </td>
-                        </tr>
                         </tr>
 
                         <!-- Remove Student Modal-->
@@ -66,14 +65,12 @@
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">Select "Confirm" to remove this student from your list of
-                                        students AND from any classes that they may belong. Removing this student does
-                                        not remove their contact history.
+                                    <div class="modal-body">Select "Confirm" to remove this student from this class. Removing this student does not remove their contact history.
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel
                                         </button>
-                                        <a class="btn btn-primary" href="/mystudents/{{ student.external_id }}/remove">Confirm</a>
+                                        <a class="btn btn-primary" href="/classes/{{ classroom.external_id }}/students/{{ student.external_id }}/remove">Confirm</a>
                                     </div>
                                 </div>
                             </div>

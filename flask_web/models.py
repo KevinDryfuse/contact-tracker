@@ -80,4 +80,4 @@ class Classroom(db.Model):
         lazy='select')
 
     def __repr__(self):
-        return '<Class {} {}>'.format(self.name)
+        return '<Class {}>'.format(self.name)

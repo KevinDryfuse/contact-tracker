@@ -1,4 +1,4 @@
-from operator import attrgetter
+from operator import attrgetter, and_
 
 from flask import render_template, flash, redirect, url_for
 from uuid import uuid4
@@ -135,17 +135,32 @@ def delete_classroom(external_id):
 @login_required
 def add_students_to_classroom(external_id):
     user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
-    c = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
     form = PostAddStudentsToClassroom()
-    s = db.session.query(Student).all()
-    form.students.choices = [(g.id, g.last_name + ", " + g.first_name) for g in db.session.query(Student).order_by('last_name', 'first_name')]
-    # form.students.data = ['py']
+    c = Classroom.query.filter(and_(Classroom.user_id == current_user.id, Classroom.external_id == external_id)).one()
+    u = db.session.query(User).filter(User.id == current_user.id).one()
+    available_students = list(set(u.students) - set(c.students))
+    available_students.sort(key=attrgetter('last_name', 'first_name'))
+    form.students.choices = [(g.id, str(g.id) + " - " + g.last_name + ", " + g.first_name) for g in available_students]
+    form.students.choices.insert(0, ('', 'Select One'))
     if form.validate_on_submit():
-        print("XXXXX")
-        print(form.students.data)
-    else:
-        print("YYYYYY")
-    return render_template("add_students_to_classroom.html", title='Add Students to Class', user=user, classroom=c, form=form)
+        student = db.session.query(Student).filter(Student.id == form.students.data).one()
+        c.students.append(student)
+        db.session.add(c)
+        db.session.commit()
+        return redirect('/classes/' + external_id + '/addstudents')
+
+    return render_template("manage_classroom.html", title='Add Students to Class', user=user, classroom=c, students=c.students, form=form)
+
+
+@bp.route("/classes/<string:classroom_external_id>/students/<string:student_external_id>/remove", methods=["GET"])
+@login_required
+def remove_student_from_classroom(classroom_external_id, student_external_id):
+    c = db.session.query(Classroom).filter(and_(Classroom.user_id == current_user.id, Classroom.external_id == classroom_external_id)).one()
+    s = db.session.query(Student).filter(Student.external_id == student_external_id).one()
+    c.students.remove(s)
+    db.session.add(c)
+    db.session.commit()
+    return redirect('/classes/' + classroom_external_id + '/addstudents')
 
 
 @bp.route("/mystudents", methods=["GET", 'POST'])
@@ -155,17 +170,12 @@ def my_students():
     form = PostAddStudentsToUser()
     u = db.session.query(User).filter(User.id == current_user.id).one()
     s = u.students
-    # s = db.session.query(Student).all()
     available_students = list(set(db.session.query(Student).all()) - set(u.students))
     available_students.sort(key=attrgetter('last_name', 'first_name'))
     form.students.choices = [(g.id, str(g.id) + " - " + g.last_name + ", " + g.first_name) for g in available_students]
     form.students.choices.insert(0, ('', 'Select One'))
     if form.validate_on_submit():
-        print("XXXXX")
-        print(form.students.data)
-        # student = db.session.query(Student).filter(Student.id == form.students.id).all()
         student = db.session.query(Student).filter(Student.id == form.students.data).one()
-        print(student)
         u.students.append(student)
         db.session.add(u)
         db.session.commit()
@@ -177,10 +187,14 @@ def my_students():
 @bp.route("/mystudents/<string:external_id>/remove", methods=["GET"])
 @login_required
 def remove_student_from_user(external_id):
-    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
     u = db.session.query(User).filter(User.id == current_user.id).one()
     s = db.session.query(Student).filter(Student.external_id == external_id).one()
     u.students.remove(s)
+    classrooms = db.session.query(Classroom).filter(Classroom.user_id == current_user.id).all()
+    for c in classrooms:
+        if s in c.students:
+            c.students.remove(s)
+            db.session.add(c)
     db.session.add(u)
     db.session.commit()
     return redirect(url_for('main.my_students'))

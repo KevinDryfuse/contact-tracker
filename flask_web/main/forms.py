@@ -25,12 +25,11 @@ class PostClassroom(FlaskForm):
 
 
 class PostAddStudentsToClassroom(FlaskForm):
-    students = SelectMultipleField('Students')
+    students = SelectField('Students')
     submit = SubmitField('Submit')
 
 
 class PostAddStudentsToUser(FlaskForm):
     students = SelectField('Students')
     submit = SubmitField('Submit')
-    delete = SubmitField('Remove')
 
