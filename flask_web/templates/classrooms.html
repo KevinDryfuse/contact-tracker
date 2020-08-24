@@ -51,9 +51,9 @@
                             <td>{{ classroom.name }}</td>
                             <td>{{ classroom.students|length }}</td>
                             <td class=".text-nowrap">
-                                <a href="/classes/{{ classroom.external_id }}/edit" class="btn btn-primary .text-nowrap" role="button">Edit</a>
-                                <a href="/classes/{{ classroom.external_id }}/addstudents" class="btn btn-primary .text-nowrap" role="button">Manage Students</a></td>
-                        </tr>
+                                <a class="btn btn-primary .text-nowrap" href="/classes/{{ classroom.external_id }}/contact" role="button">Contact</a>
+                                <a href="/classes/{{ classroom.external_id }}/edit" class="btn btn-secondary .text-nowrap" role="button">Edit</a>
+                                <a href="/classes/{{ classroom.external_id }}/addstudents" class="btn btn-secondary .text-nowrap" role="button">Manage Students</a></td>
                         </tr>
                         {% endfor %}
                         </tbody>

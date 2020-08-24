@@ -3,7 +3,6 @@ from operator import attrgetter, and_
 from flask import render_template, flash, redirect, url_for
 from uuid import uuid4
 
-
 from flask_web import db
 from flask_web.main import bp
 from flask_web.main.forms import (
@@ -14,14 +13,16 @@ from flask_web.main.forms import (
     PostAddStudentsToClassroom,
     PostAddStudentsToUser,
     PostContactType,
-    PostServicesOffered
+    PostServicesOffered,
+    PostClassContact
 )
 from flask_web.models import (
     Student,
     User,
     Classroom,
     ServiceOffered,
-    ContactType
+    ContactType,
+    Contact
 )
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -31,23 +32,11 @@ from flask_login import current_user, login_user, logout_user, login_required
 @login_required
 def index():
     user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
-    # form = PostAddStudentsToUser()
     u = db.session.query(User).filter(User.id == current_user.id).one()
     s = u.students
-    # available_students = list(set(db.session.query(Student).all()) - set(u.students))
-    # available_students.sort(key=attrgetter('last_name', 'first_name'))
-    # form.students.choices = [(g.id, str(g.id) + " - " + g.last_name + ", " + g.first_name) for g in available_students]
-    # form.students.choices.insert(0, ('', 'Select One'))
-    # if form.validate_on_submit():
-    #     student = db.session.query(Student).filter(Student.id == form.students.data).one()
-    #     u.students.append(student)
-    #     db.session.add(u)
-    #     db.session.commit()
-    #     return redirect(url_for('main.my_students'))
-    #
-    # return render_template("mystudents.html", title='Students', user=user, students=s, form=form)
-    #
-    return render_template("index.html", title='Dashboard', user=user, students=s)
+    c = u.contacts
+    return render_template("index.html", title='Dashboard', contacts=c, user=user, students=s)
+
 
 # TODO: Do this later, this is not MVP .. however would like to update user info and update profile pic and stuff
 # @bp.route('/profile', methods=["GET", "POST"])
@@ -100,7 +89,9 @@ def login():
 def edit_student(external_id):
     form = PostStudent()
     if form.validate_on_submit():
-        db.session.query(Student).filter(Student.external_id == external_id).update({Student.first_name: form.first_name.data, Student.last_name: form.last_name.data}, synchronize_session=False)
+        db.session.query(Student).filter(Student.external_id == external_id).update(
+            {Student.first_name: form.first_name.data, Student.last_name: form.last_name.data},
+            synchronize_session=False)
         db.session.commit()
         return redirect(url_for('main.students'))
 
@@ -142,7 +133,8 @@ def classrooms():
 def edit_classroom(external_id):
     form = PostClassroom()
     if form.validate_on_submit():
-        db.session.query(Classroom).filter(Classroom.external_id == external_id).update({Classroom.name: form.name.data}, synchronize_session=False)
+        db.session.query(Classroom).filter(Classroom.external_id == external_id).update(
+            {Classroom.name: form.name.data}, synchronize_session=False)
         db.session.commit()
         return redirect(url_for('main.classrooms'))
 
@@ -171,7 +163,7 @@ def add_students_to_classroom(external_id):
     u = db.session.query(User).filter(User.id == current_user.id).one()
     available_students = list(set(u.students) - set(c.students))
     available_students.sort(key=attrgetter('last_name', 'first_name'))
-    form.students.choices = [(g.id, str(g.id) + " - " + g.last_name + ", " + g.first_name) for g in available_students]
+    form.students.choices = [(g.id, g.last_name + ", " + g.first_name) for g in available_students]
     form.students.choices.insert(0, ('', 'Select One'))
     if form.validate_on_submit():
         student = db.session.query(Student).filter(Student.id == form.students.data).one()
@@ -180,13 +172,15 @@ def add_students_to_classroom(external_id):
         db.session.commit()
         return redirect('/classes/' + external_id + '/addstudents')
 
-    return render_template("manage_classroom.html", title='Add Students to Class', user=user, classroom=c, students=c.students, form=form)
+    return render_template("manage_classroom.html", title='Add Students to Class', user=user, classroom=c,
+                           students=c.students, form=form)
 
 
 @bp.route("/classes/<string:classroom_external_id>/students/<string:student_external_id>/remove", methods=["GET"])
 @login_required
 def remove_student_from_classroom(classroom_external_id, student_external_id):
-    c = db.session.query(Classroom).filter(and_(Classroom.user_id == current_user.id, Classroom.external_id == classroom_external_id)).one()
+    c = db.session.query(Classroom).filter(
+        and_(Classroom.user_id == current_user.id, Classroom.external_id == classroom_external_id)).one()
     s = db.session.query(Student).filter(Student.external_id == student_external_id).one()
     c.students.remove(s)
     db.session.add(c)
@@ -203,7 +197,7 @@ def my_students():
     s = u.students
     available_students = list(set(db.session.query(Student).all()) - set(u.students))
     available_students.sort(key=attrgetter('last_name', 'first_name'))
-    form.students.choices = [(g.id, str(g.id) + " - " + g.last_name + ", " + g.first_name) for g in available_students]
+    form.students.choices = [(g.id, g.last_name + ", " + g.first_name) for g in available_students]
     form.students.choices.insert(0, ('', 'Select One'))
     if form.validate_on_submit():
         student = db.session.query(Student).filter(Student.id == form.students.data).one()
@@ -236,8 +230,74 @@ def remove_student_from_user(external_id):
 def contact_my_student(external_id):
     user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
     form = PostStudentContact()
+    ct = db.session.query(ContactType).all()
+    so = db.session.query(ServiceOffered).all()
+    form.contact_types.choices = [(g.name, g.name) for g in ct]
+    form.contact_types.choices.insert(0, ('', 'Select One'))
+
+    form.services_offered.choices = [(g.name, g.name) for g in so]
+    form.services_offered.choices.insert(0, ('', 'Select One'))
     s = db.session.query(Student).filter(Student.external_id == external_id).one()
+
+    if form.validate_times():
+        if form.validate_on_submit():
+            uuid = str(uuid4())
+            c = Contact(external_id=uuid,
+                        student_id=s.id,
+                        user_id=current_user.id,
+                        contact_date=form.contact_date.data,
+                        contact_start_time=form.contact_start_time.data,
+                        contact_end_time=form.contact_end_time.data,
+                        service_offered=form.services_offered.data,
+                        contact_type=form.contact_types.data,
+                        notes=form.notes.data)
+
+            db.session.add(c)
+            db.session.commit()
+            return redirect(url_for('main.index'))
+    else:
+        print("Start time is greater than end time")
+
     return render_template("contact_student.html", title='Log Student Contact', user=user, student=s, form=form)
+
+
+@bp.route("/classes/<string:external_id>/contact", methods=["GET", "POST"])
+@login_required
+def contact_my_class(external_id):
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    form = PostClassContact()
+    ct = db.session.query(ContactType).all()
+    so = db.session.query(ServiceOffered).all()
+    form.contact_types.choices = [(g.name, g.name) for g in ct]
+    form.contact_types.choices.insert(0, ('', 'Select One'))
+    form.services_offered.choices = [(g.name, g.name) for g in so]
+    form.services_offered.choices.insert(0, ('', 'Select One'))
+
+    c = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
+    s = c.students
+    form.student_list.choices = [(g.id, g.last_name + ", " + g.first_name) for g in s]
+    form.student_list.data = ([g.id for g in s])
+
+    if form.validate_times():
+        if form.validate_on_submit():
+            for student in form.student_list.data:
+                uuid = str(uuid4())
+                c = Contact(external_id=uuid,
+                            student_id=student,
+                            user_id=current_user.id,
+                            contact_date=form.contact_date.data,
+                            contact_start_time=form.contact_start_time.data,
+                            contact_end_time=form.contact_end_time.data,
+                            service_offered=form.services_offered.data,
+                            contact_type=form.contact_types.data,
+                            notes=form.notes.data)
+                db.session.add(c)
+            db.session.commit()
+            return redirect(url_for('main.index'))
+    else:
+        print("Start time is greater than end time")
+
+    return render_template("contact_class.html", title='Log Student Contact', user=user, classroom=c, students=s, form=form)
 
 
 @bp.route("/contact_types", methods=["GET", 'POST'])
@@ -277,7 +337,8 @@ def services_offered():
 def edit_services_offered(external_id):
     form = PostServicesOffered()
     if form.validate_on_submit():
-        db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).update({ServiceOffered.name: form.name.data}, synchronize_session=False)
+        db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).update(
+            {ServiceOffered.name: form.name.data}, synchronize_session=False)
         db.session.commit()
         return redirect(url_for('main.services_offered'))
 
@@ -285,7 +346,8 @@ def edit_services_offered(external_id):
     s = db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).one()
     form.name.data = s.name
 
-    return render_template("edit_service_offered.html", title='Edit Offered Service', user=user, service_offered=s, form=form)
+    return render_template("edit_service_offered.html", title='Edit Offered Service', user=user, service_offered=s,
+                           form=form)
 
 
 @bp.route('/services_offered/<string:external_id>/delete', methods=['GET'])
@@ -302,7 +364,8 @@ def delete_services_offered(external_id):
 def edit_contact_types(external_id):
     form = PostContactType()
     if form.validate_on_submit():
-        db.session.query(ContactType).filter(ContactType.external_id == external_id).update({ServiceOffered.name: form.name.data}, synchronize_session=False)
+        db.session.query(ContactType).filter(ContactType.external_id == external_id).update(
+            {ServiceOffered.name: form.name.data}, synchronize_session=False)
         db.session.commit()
         return redirect(url_for('main.contact_types'))
 

@@ -4,8 +4,7 @@
 <div class="col-xl-6 col-lg-8">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Log Contact for {{ student.first_name }} {{ student.last_name
-                }}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Log Contact for Students in {{ classroom.name }}</h6>
             <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -16,6 +15,14 @@
         <div class="card-body">
             <form action="" method="post">
                 {{ form.hidden_tag() }}
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        {{ form.student_list.label }}
+                        {{ form.student_list(class_="form-control", placeholder='Students') }}
+                    </div>
+                </div>
+                      <!-- Divider -->
+      <hr class="sidebar-divider">
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         {{ form.contact_date.label }}

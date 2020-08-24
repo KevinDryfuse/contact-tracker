@@ -12,7 +12,7 @@
                 <form action="" method="post">
                     {{ form.hidden_tag() }}
                     <p>
-                    <div>{{ form.students(class_="form-control form-control-user") }}</div>
+                    {{ form.students(class_="form-control form-control-user") }}
                     </p>
                     <p>{{ form.submit(class_="btn btn-primary") }}</p>
                 </form>
@@ -31,27 +31,37 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
-                            <th>First Name</th>
                             <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Classes</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>First Name</th>
                             <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Classes</th>
                             <th></th>
                         </tr>
                         </tfoot>
                         <tbody>
                         {% for student in students %}
                         <tr>
-                            <td>{{ student.first_name }}</td>
                             <td>{{ student.last_name }}</td>
-                            <td><a href="/mystudents/{{ student.external_id }}/remove" class="btn btn-primary btn-block"
-                                   data-toggle="modal" data-target="#remove{{ student.external_id }}Modal">Remove</a>
+                            <td>{{ student.first_name }}</td>
+                            <td>{% for classroom in student.classrooms %}
+                                    {{ classroom.name }}
+                                    {% if not loop.last %}
+                                    |
+                                    {% endif %}
+                                {% endfor %}
                             </td>
-                        </tr>
+                            <td class=".text-nowrap">
+                                <a class="btn btn-primary .text-nowrap" href="/mystudents/{{ student.external_id }}/contact" role="button">Contact</a>
+                                <a class="btn btn-danger .text-nowrap" href="/mystudents/{{ student.external_id }}/remove"
+                                   data-toggle="modal" data-target="#remove{{ student.external_id }}Modal" role="button">Remove</a>
+                            </td>
                         </tr>
 
                         <!-- Remove Student Modal-->

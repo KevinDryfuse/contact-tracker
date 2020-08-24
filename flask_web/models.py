@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy import Table, Column, Integer, ForeignKey
 
 from flask_web import db
@@ -35,6 +37,7 @@ class User(UserMixin, db.Model):
         secondary=user_student_association_table,
         back_populates="users",
         lazy='select')
+    contacts = relationship("Contact", back_populates="user")
 
     @validates('email')
     def convert_lower(self, key, value):
@@ -63,6 +66,7 @@ class Student(db.Model):
         "User",
         secondary=user_student_association_table,
         back_populates="students", lazy='select')
+    contacts = relationship("Contact", back_populates="student")
 
     def __repr__(self):
         return '<Student {} {}>'.format(self.first_name, self.last_name)
@@ -87,6 +91,7 @@ class ContactType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.String(36), index=True, unique=True)
     name = db.Column(db.String(64))
+    # TODO: Description?
 
     def __repr__(self):
         return '<Contact Type {}>'.format(self.name)
@@ -96,6 +101,24 @@ class ServiceOffered(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.String(36), index=True, unique=True)
     name = db.Column(db.String(64))
+    # TODO: Description?
 
     def __repr__(self):
         return '<Service Offered {}>'.format(self.name)
+
+
+class Contact(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    external_id = db.Column(db.String(36), index=True, unique=True)
+    student_id = db.Column(Integer, ForeignKey('student.id'))
+    student = relationship("Student", back_populates="contacts")
+    user_id = db.Column(Integer, ForeignKey('user.id'))
+    user = relationship("User", back_populates="contacts")
+    contact_date = db.Column(db.Date())
+    contact_start_time = db.Column(db.Time())
+    contact_end_time = db.Column(db.Time())
+    service_offered = db.Column(db.String(64))  # Why not a direct relationship?! Because I want to preserve history
+    contact_type = db.Column(db.String(64))
+    notes = db.Column(db.Text)
+
+
