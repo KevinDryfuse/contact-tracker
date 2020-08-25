@@ -314,7 +314,7 @@ def contact_my_class(external_id):
     else:
         print("Start time is greater than end time")
 
-    return render_template("contact_class.html", title='Log Student Contact', user=user, classroom=c, students=s,
+    return render_template("contact_class.html", title='Log Student Contact', user=user, classroom=classroom, students=s,
                            form=form)
 
 
