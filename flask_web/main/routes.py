@@ -289,8 +289,8 @@ def contact_my_class(external_id):
     form.services_offered.choices = [(g.name, g.name) for g in so]
     form.services_offered.choices.insert(0, ('', 'Select One'))
 
-    c = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
-    s = c.students
+    classroom = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
+    s = classroom.students
     form.student_list.choices = [(g.id, g.last_name + ", " + g.first_name) for g in s]
     form.student_list.data = ([g.id for g in s])
 
@@ -306,7 +306,7 @@ def contact_my_class(external_id):
                             contact_end_time=form.contact_end_time.data,
                             service_offered=form.services_offered.data,
                             contact_type=form.contact_types.data,
-                            classroom=c.name,
+                            classroom=classroom.name,
                             notes=form.notes.data)
                 db.session.add(c)
             db.session.commit()
