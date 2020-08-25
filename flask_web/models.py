@@ -14,9 +14,9 @@ classroom_student_association_table = Table('classroom_student', db.Model.metada
                                             )
 
 user_student_association_table = Table('user_student', db.Model.metadata,
-                                            Column('user_id', Integer, ForeignKey('user.id')),
-                                            Column('student_id', Integer, ForeignKey('student.id'))
-                                            )
+                                       Column('user_id', Integer, ForeignKey('user.id')),
+                                       Column('student_id', Integer, ForeignKey('student.id'))
+                                       )
 
 
 @login.user_loader
@@ -91,6 +91,7 @@ class ContactType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.String(36), index=True, unique=True)
     name = db.Column(db.String(64))
+
     # TODO: Description?
 
     def __repr__(self):
@@ -101,6 +102,7 @@ class ServiceOffered(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.String(36), index=True, unique=True)
     name = db.Column(db.String(64))
+
     # TODO: Description?
 
     def __repr__(self):
@@ -119,6 +121,5 @@ class Contact(db.Model):
     contact_end_time = db.Column(db.Time())
     service_offered = db.Column(db.String(64))  # Why not a direct relationship?! Because I want to preserve history
     contact_type = db.Column(db.String(64))
+    classroom = db.Column(db.String(64))
     notes = db.Column(db.Text)
-
-

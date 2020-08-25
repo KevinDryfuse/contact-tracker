@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-xl-6 col-lg-8">
+    <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Add New Service Offering</h6>
@@ -10,20 +10,19 @@
             <div class="card-body">
                 <form action="" method="post">
                     {{ form.hidden_tag() }}
-                    <p>
-                        {{ form.name(class_="form-control form-control-user", type="text", placeholder='Service Offered') }}
-                        {% for error in form.name.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                    </p>
-                    <p>{{ form.submit(class_="btn btn-primary") }}</p>
+                    <div class="row">
+                        <div class="col-4">{{ form.name(class_="form-control form-control-user", type="text",
+                            placeholder='Service Offered', autofocus=true) }}
+                        </div>
+                        <div class="col-2">{{ form.submit(class_="btn btn-primary") }}</div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-6 col-lg-8">
+    <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Services Offered</h6>
@@ -48,7 +47,8 @@
                         <tr>
                             <td>{{ service.name }}</td>
                             <td class=".text-nowrap">
-                                <a href="/services_offered/{{ service.external_id }}/edit" class="btn btn-primary .text-nowrap" role="button">Edit</a>
+                                <a href="/services_offered/{{ service.external_id }}/edit"
+                                   class="btn btn-primary btn-sm" role="button">Edit</a>
                         </tr>
                         {% endfor %}
                         </tbody>

@@ -12,23 +12,25 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
-                            <th>Contact Date</th>
-                            <th>Contact Start Time</th>
-                            <th>Contact End Time</th>
-                            <th>Student Name</th>
-                            <th>Contact Type</th>
-                            <th>Service Offered</th>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Class</th>
+                            <th>Student</th>
+                            <th>Type</th>
+                            <th>Service</th>
                             <th>Notes</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>Contact Date</th>
-                            <th>Contact Start Time</th>
-                            <th>Contact End Time</th>
-                            <th>Student Name</th>
-                            <th>Contact Type</th>
-                            <th>Service Offered</th>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Class</th>
+                            <th>Student</th>
+                            <th>Type</th>
+                            <th>Service</th>
                             <th>Notes</th>
                         </tr>
                         </tfoot>
@@ -38,6 +40,7 @@
                             <td>{{ contact.contact_date }}</td>
                             <td>{{ contact.contact_start_time }}</td>
                             <td>{{ contact.contact_end_time }}</td>
+                            <td>{{ contact.classroom }}</td>
                             <td>{{ contact.student.last_name }}, {{ contact.student.first_name }}</td>
                             <td>{{ contact.contact_type}}</td>
                             <td>{{ contact.service_offered }}</td>

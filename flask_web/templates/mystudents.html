@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-xl-6 col-lg-8">
+    <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Add Student To My List</h6>
@@ -11,17 +11,18 @@
             <div class="card-body">
                 <form action="" method="post">
                     {{ form.hidden_tag() }}
-                    <p>
-                    {{ form.students(class_="form-control form-control-user") }}
-                    </p>
-                    <p>{{ form.submit(class_="btn btn-primary") }}</p>
+                    <div class="row">
+                        <div class="col-6">{{ form.students(class_="form-control form-control-user", autofocus=true) }}
+                        </div>
+                        <div class="col-2">{{ form.submit(class_="btn btn-primary") }}</div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-6 col-lg-8">
+    <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">My Students</h6>
@@ -51,16 +52,19 @@
                             <td>{{ student.last_name }}</td>
                             <td>{{ student.first_name }}</td>
                             <td>{% for classroom in student.classrooms %}
-                                    {{ classroom.name }}
-                                    {% if not loop.last %}
-                                    |
-                                    {% endif %}
+                                {{ classroom.name }}
+                                {% if not loop.last %}
+                                |
+                                {% endif %}
                                 {% endfor %}
                             </td>
                             <td class=".text-nowrap">
-                                <a class="btn btn-primary .text-nowrap" href="/mystudents/{{ student.external_id }}/contact" role="button">Contact</a>
-                                <a class="btn btn-danger .text-nowrap" href="/mystudents/{{ student.external_id }}/remove"
-                                   data-toggle="modal" data-target="#remove{{ student.external_id }}Modal" role="button">Remove</a>
+                                <a class="btn btn-primary btn-sm"
+                                   href="/mystudents/{{ student.external_id }}/contact" role="button">Contact</a>
+                                <a class="btn btn-danger btn-sm"
+                                   href="/mystudents/{{ student.external_id }}/remove"
+                                   data-toggle="modal" data-target="#remove{{ student.external_id }}Modal"
+                                   role="button">Remove</a>
                             </td>
                         </tr>
 

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-xl-6 col-lg-8">
+    <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Add New Class</h6>
@@ -10,20 +10,19 @@
             <div class="card-body">
                 <form action="" method="post">
                     {{ form.hidden_tag() }}
-                    <p>
-                        {{ form.name(class_="form-control form-control-user", type="text", placeholder='Class Name') }}
-                        {% for error in form.name.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                    </p>
-                    <p>{{ form.submit(class_="btn btn-primary") }}</p>
+                    <div class="row">
+                        <div class="col-4">{{ form.name(class_="form-control form-control-user", type="text",
+                            placeholder='Class Name', autofocus=true) }}
+                        </div>
+                        <div class="col-2">{{ form.submit(class_="btn btn-primary") }}</div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-6 col-lg-8">
+    <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">{{ user.firstName }}'s Classes</h6>
@@ -51,9 +50,12 @@
                             <td>{{ classroom.name }}</td>
                             <td>{{ classroom.students|length }}</td>
                             <td class=".text-nowrap">
-                                <a class="btn btn-primary .text-nowrap" href="/classes/{{ classroom.external_id }}/contact" role="button">Contact</a>
-                                <a href="/classes/{{ classroom.external_id }}/edit" class="btn btn-secondary .text-nowrap" role="button">Edit</a>
-                                <a href="/classes/{{ classroom.external_id }}/addstudents" class="btn btn-secondary .text-nowrap" role="button">Manage Students</a></td>
+                                <a class="btn btn-primary btn-sm"
+                                   href="/classes/{{ classroom.external_id }}/contact" role="button">Contact</a>
+                                <a href="/classes/{{ classroom.external_id }}/edit"
+                                   class="btn btn-secondary btn-sm" role="button">Edit</a>
+                                <a href="/classes/{{ classroom.external_id }}/addstudents"
+                                   class="btn btn-secondary btn-sm .text-nowrap" role="button">Manage Students</a></td>
                         </tr>
                         {% endfor %}
                         </tbody>

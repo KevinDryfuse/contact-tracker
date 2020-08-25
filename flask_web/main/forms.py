@@ -18,25 +18,39 @@ class PostStudent(FlaskForm):
         DataRequired(), Length(min=1, max=64)])
     last_name = StringField('last name', validators=[
         DataRequired(), Length(min=1, max=64)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
+
+
+class PostStudentEdit(FlaskForm):
+    first_name = StringField('first name', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    last_name = StringField('last name', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Save')
 
 
 class PostClassroom(FlaskForm):
     name = StringField('name', validators=[
         DataRequired(), Length(min=1, max=64)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
+
+
+class PostClassroomEdit(FlaskForm):
+    name = StringField('name', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Save')
 
 
 class PostAddStudentsToClassroom(FlaskForm):
     students = SelectField('Students', validators=[
-        DataRequired()])
-    submit = SubmitField('Submit')
+        DataRequired()], render_kw={'autofocus': True})
+    submit = SubmitField('Add')
 
 
 class PostAddStudentsToUser(FlaskForm):
     students = SelectField('Students', validators=[
         DataRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
 
 
 class PostStudentContact(FlaskForm):
@@ -50,8 +64,10 @@ class PostStudentContact(FlaskForm):
         DataRequired()])
     services_offered = SelectField('Service Offered', validators=[
         DataRequired()])
+    classroom_list = SelectField('Classes', validators=[
+        DataRequired()])
     notes = TextAreaField('Additional Notes', validators=[Length(max=4000)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
 
     def validate_times(self):
         if self.contact_start_time.data > self.contact_end_time.data:
@@ -73,7 +89,7 @@ class PostClassContact(FlaskForm):
     services_offered = SelectField('Service Offered', validators=[
         DataRequired()])
     notes = TextAreaField('Additional Notes', validators=[Length(max=4000)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
 
     def validate_times(self):
         if self.contact_start_time.data > self.contact_end_time.data:
@@ -81,13 +97,26 @@ class PostClassContact(FlaskForm):
         else:
             return True
 
+
 class PostContactType(FlaskForm):
-    name = StringField('name', validators=[
+    name = StringField('Contact Type', validators=[
         DataRequired(), Length(min=1, max=64)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
+
+
+class PostContactTypeEdit(FlaskForm):
+    name = StringField('Contact Type', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Save')
 
 
 class PostServicesOffered(FlaskForm):
-    name = StringField('name', validators=[
+    name = StringField('Service Offered', validators=[
         DataRequired(), Length(min=1, max=64)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Add')
+
+
+class PostServicesOfferedEdit(FlaskForm):
+    name = StringField('Service Offered', validators=[
+        DataRequired(), Length(min=1, max=64)])
+    submit = SubmitField('Save')

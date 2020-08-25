@@ -1,36 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="col-xl-6 col-lg-8">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Edit Contact Type</h6>
-            <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                     aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="/services_offered/{{ service_offered.external_id }}/delete" data-toggle="modal" data-target="#deleteServiceOfferedModal">Delete Service</a>
+<div class="row">
+    <div class="col-10">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Edit Service Offering</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                         aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="/services_offered/{{ service_offered.external_id }}/delete"
+                           data-toggle="modal" data-target="#deleteServiceOfferedModal">Delete Service</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            <form action="" method="post">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.name(class_="form-control form-control-user", type="text", placeholder='Service Offered') }}
-                    {% for error in form.name.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>{{ form.submit(class_="btn btn-primary") }}</p>
-            </form>
+            <div class="card-body">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-4">{{ form.name(class_="form-control form-control-user", type="text",
+                            placeholder='Service Offered', autofocus=true) }}
+                        </div>
+                        <div class="col-2">{{ form.submit(class_="btn btn-primary") }}</div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
+</div>
 <!-- Delete Service Offered Modal-->
 <div class="modal fade" id="deleteServiceOfferedModal" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -42,7 +44,8 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Confirm" to remove this service from the system entirely.  Unless you are 100% sure that you should be
+            <div class="modal-body">Select "Confirm" to remove this service from the system entirely. Unless you are
+                100% sure that you should be
                 doing this, I would hit "Cancel".
             </div>
             <div class="modal-footer">

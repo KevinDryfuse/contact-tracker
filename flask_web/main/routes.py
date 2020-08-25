@@ -14,7 +14,11 @@ from flask_web.main.forms import (
     PostAddStudentsToUser,
     PostContactType,
     PostServicesOffered,
-    PostClassContact
+    PostClassContact,
+    PostServicesOfferedEdit,
+    PostContactTypeEdit,
+    PostStudentEdit,
+    PostClassroomEdit
 )
 from flask_web.models import (
     Student,
@@ -87,7 +91,7 @@ def login():
 @bp.route('/students/<string:external_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_student(external_id):
-    form = PostStudent()
+    form = PostStudentEdit()
     if form.validate_on_submit():
         db.session.query(Student).filter(Student.external_id == external_id).update(
             {Student.first_name: form.first_name.data, Student.last_name: form.last_name.data},
@@ -131,7 +135,7 @@ def classrooms():
 @bp.route('/classes/<string:external_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_classroom(external_id):
-    form = PostClassroom()
+    form = PostClassroomEdit()
     if form.validate_on_submit():
         db.session.query(Classroom).filter(Classroom.external_id == external_id).update(
             {Classroom.name: form.name.data}, synchronize_session=False)
@@ -239,6 +243,17 @@ def contact_my_student(external_id):
     form.services_offered.choices.insert(0, ('', 'Select One'))
     s = db.session.query(Student).filter(Student.external_id == external_id).one()
 
+    number_of_classrooms = len(s.classrooms)
+    print(number_of_classrooms)
+    if number_of_classrooms > 0:
+        form.classroom_list.choices = [(g.name, g.name) for g in s.classrooms]
+    else:
+        all_classrooms = db.session.query(Classroom).all()
+        number_of_classrooms = len(all_classrooms)
+        form.classroom_list.choices = [(g.name, g.name) for g in all_classrooms]
+    if number_of_classrooms != 1:
+        form.classroom_list.choices.insert(0, ('', 'Select One'))
+
     if form.validate_times():
         if form.validate_on_submit():
             uuid = str(uuid4())
@@ -250,6 +265,7 @@ def contact_my_student(external_id):
                         contact_end_time=form.contact_end_time.data,
                         service_offered=form.services_offered.data,
                         contact_type=form.contact_types.data,
+                        classroom=form.classroom_list.data,
                         notes=form.notes.data)
 
             db.session.add(c)
@@ -290,6 +306,7 @@ def contact_my_class(external_id):
                             contact_end_time=form.contact_end_time.data,
                             service_offered=form.services_offered.data,
                             contact_type=form.contact_types.data,
+                            classroom=c.name,
                             notes=form.notes.data)
                 db.session.add(c)
             db.session.commit()
@@ -297,7 +314,8 @@ def contact_my_class(external_id):
     else:
         print("Start time is greater than end time")
 
-    return render_template("contact_class.html", title='Log Student Contact', user=user, classroom=c, students=s, form=form)
+    return render_template("contact_class.html", title='Log Student Contact', user=user, classroom=c, students=s,
+                           form=form)
 
 
 @bp.route("/contact_types", methods=["GET", 'POST'])
@@ -335,7 +353,7 @@ def services_offered():
 @bp.route('/services_offered/<string:external_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_services_offered(external_id):
-    form = PostServicesOffered()
+    form = PostServicesOfferedEdit()
     if form.validate_on_submit():
         db.session.query(ServiceOffered).filter(ServiceOffered.external_id == external_id).update(
             {ServiceOffered.name: form.name.data}, synchronize_session=False)
@@ -362,7 +380,7 @@ def delete_services_offered(external_id):
 @bp.route('/contact_types/<string:external_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_contact_types(external_id):
-    form = PostContactType()
+    form = PostContactTypeEdit()
     if form.validate_on_submit():
         db.session.query(ContactType).filter(ContactType.external_id == external_id).update(
             {ServiceOffered.name: form.name.data}, synchronize_session=False)
