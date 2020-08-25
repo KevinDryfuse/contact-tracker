@@ -13,7 +13,7 @@
                     <div class="form-row">
                         <div class="form-group col-10">
                             {{ form.student_list.label }}
-                            {{ form.student_list(class_="form-control", placeholder='Students') }}
+                            {{ form.student_list(class_="form-control") }}
                         </div>
                     </div>
                     <!-- Divider -->
@@ -53,6 +53,9 @@
                         </div>
                     </div>
                     <p>{{ form.submit(class_="btn btn-primary") }}</p>
+<!--                    {% if form.errors %}-->
+<!--    {{ form.errors }}-->
+<!--{% endif %}-->
                 </form>
             </div>
         </div>

@@ -291,9 +291,7 @@ def contact_my_class(external_id):
 
     classroom = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
     s = classroom.students
-    form.student_list.choices = [(g.id, g.last_name + ", " + g.first_name) for g in s]
-    form.student_list.data = ([g.id for g in s])
-
+    form.student_list.choices = [(str(g.id), g.last_name + ", " + g.first_name) for g in s]
     if form.validate_times():
         if form.validate_on_submit():
             for student in form.student_list.data:
