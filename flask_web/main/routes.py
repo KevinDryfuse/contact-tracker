@@ -308,7 +308,7 @@ def contact_my_class(external_id):
                             notes=form.notes.data)
                 db.session.add(c)
             db.session.commit()
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.classrooms'))
     else:
         print("Start time is greater than end time")
 
