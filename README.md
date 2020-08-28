@@ -26,12 +26,20 @@ python -m venv venv
 pip install -r requirements.txt
 flask db upgrade
 ```
+* Create a .flaskenv file that contains:
+```
+FLASK_APP=app.py
+```
+* Create a .env file that contains:
+```
+SECRET_KEY="<something only you know>"
+```
 * Run python and create a user:
 ```
-your_email = '<YOUR EMAIL>'
-your_first_name = '<YOUR FIRST NAME>'
-your_last_name = '<YOUR LAST NAME>'
-your_password = '<YOUR PASSWORD>'
+your_email = '<your email>'
+your_first_name = '<your first name>'
+your_last_name = '<your last name>'
+your_password = '<your password>'
 from uuid import uuid4
 from flask_web import db
 from flask_web.models import User
