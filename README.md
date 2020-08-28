@@ -60,3 +60,4 @@ db.session.commit()
 * Ability to mark students as absent when creating a contact
 * Print functionality
 * Update / delete of contacts
+* Flash messages when things change
