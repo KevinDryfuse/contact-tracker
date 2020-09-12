@@ -51,8 +51,39 @@
                             <td>{{ contact.notes }}</td>
                             <td>{{ contact.absent }}</td>
                             <td><a class="btn btn-primary btn-sm"
-                                   href="/contacts/{{ contact.external_id }}/edit" role="button">Edit</a></td>
+                                   href="/contacts/{{ contact.external_id }}/edit" role="button">Edit</a>
+                            <a class="btn btn-danger btn-sm"
+                                   href="/contacts/{{ contact.external_id }}/remove"
+                                   data-toggle="modal" data-target="#remove{{ contact.external_id }}Modal"
+                                   role="button">Remove</a>
+                            </td>
                         </tr>
+
+                        <!-- Remove Contact Modal-->
+                        <div class="modal fade" id="remove{{ contact.external_id }}Modal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Remove contact for {{ contact.student.first_name }}
+                                            {{ contact.student.last_name }}</h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">Select "Confirm" to remove this contact.  This is permanent
+                                        and therefore cannot be reversed!  Please hit "Cancel" if you do not want to
+                                        take a chance!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel
+                                        </button>
+                                        <a class="btn btn-primary" href="/contacts/{{ contact.external_id }}/remove">Confirm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {% endfor %}
                         </tbody>
                     </table>

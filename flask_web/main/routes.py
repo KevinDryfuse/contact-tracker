@@ -251,9 +251,13 @@ def contact_my_student(external_id):
     number_of_classrooms = len(s.classrooms)
     print(number_of_classrooms)
     if number_of_classrooms > 0:
+        # Sort the list alphabetically
+        s.classrooms.sort(key=lambda x: x.name, reverse=False)
         form.classroom_list.choices = [(g.name, g.name) for g in s.classrooms]
     else:
         all_classrooms = db.session.query(Classroom).all()
+        # Sort the list alphabetically
+        all_classrooms.sort(key=lambda x: x.name, reverse=False)
         number_of_classrooms = len(all_classrooms)
         form.classroom_list.choices = [(g.name, g.name) for g in all_classrooms]
     if number_of_classrooms != 1:
@@ -299,6 +303,8 @@ def contact_my_class(external_id):
 
     classroom = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
     s = classroom.students
+    s.sort(key=attrgetter('last_name', 'first_name'), reverse=False)
+
     # TODO: Instead of using their database id here, use the external_id so that it's not easily edited client side
     form.student_list.choices = [(str(g.id), g.last_name + ", " + g.first_name) for g in s]
     form.absent_student_list.choices = [(str(g.id), g.last_name + ", " + g.first_name) for g in s]
@@ -339,6 +345,17 @@ def contact_my_class(external_id):
 
     return render_template("contact_class.html", title='Log Student Contact', user=user, classroom=classroom, students=s,
                            form=form)
+
+
+@bp.route("/contacts/<string:external_id>/remove", methods=["GET"])
+@login_required
+def remove_contact_from_user(external_id):
+    u = db.session.query(User).filter(User.id == current_user.id).one()
+    c = db.session.query(Contact).filter(Contact.external_id == external_id).one()
+    u.contacts.remove(c)
+    db.session.add(c)
+    db.session.commit()
+    return redirect(url_for('main.index'))
 
 
 @bp.route("/contact_types", methods=["GET", 'POST'])
