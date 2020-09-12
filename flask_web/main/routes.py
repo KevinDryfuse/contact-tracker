@@ -18,7 +18,8 @@ from flask_web.main.forms import (
     PostServicesOfferedEdit,
     PostContactTypeEdit,
     PostStudentEdit,
-    PostClassroomEdit
+    PostClassroomEdit,
+    PostEditContact
 )
 from flask_web.models import (
     Student,
@@ -236,6 +237,10 @@ def contact_my_student(external_id):
     form = PostStudentContact()
     ct = db.session.query(ContactType).all()
     so = db.session.query(ServiceOffered).all()
+
+    ct.sort(key=lambda x: x.name, reverse=False)
+    so.sort(key=lambda x: x.name, reverse=False)
+
     form.contact_types.choices = [(g.name, g.name) for g in ct]
     form.contact_types.choices.insert(0, ('', 'Select One'))
 
@@ -266,7 +271,8 @@ def contact_my_student(external_id):
                         service_offered=form.services_offered.data,
                         contact_type=form.contact_types.data,
                         classroom=form.classroom_list.data,
-                        notes=form.notes.data)
+                        notes=form.notes.data,
+                        absent=form.absent.data)
 
             db.session.add(c)
             db.session.commit()
@@ -284,6 +290,8 @@ def contact_my_class(external_id):
     form = PostClassContact()
     ct = db.session.query(ContactType).all()
     so = db.session.query(ServiceOffered).all()
+    ct.sort(key=lambda x: x.name, reverse=False)
+    so.sort(key=lambda x: x.name, reverse=False)
     form.contact_types.choices = [(g.name, g.name) for g in ct]
     form.contact_types.choices.insert(0, ('', 'Select One'))
     form.services_offered.choices = [(g.name, g.name) for g in so]
@@ -291,7 +299,9 @@ def contact_my_class(external_id):
 
     classroom = db.session.query(Classroom).filter(Classroom.external_id == external_id).one()
     s = classroom.students
+    # TODO: Instead of using their database id here, use the external_id so that it's not easily edited client side
     form.student_list.choices = [(str(g.id), g.last_name + ", " + g.first_name) for g in s]
+    form.absent_student_list.choices = [(str(g.id), g.last_name + ", " + g.first_name) for g in s]
     if form.validate_times():
         if form.validate_on_submit():
             for student in form.student_list.data:
@@ -305,6 +315,21 @@ def contact_my_class(external_id):
                             service_offered=form.services_offered.data,
                             contact_type=form.contact_types.data,
                             classroom=classroom.name,
+                            absent=False,
+                            notes=form.notes.data)
+                db.session.add(c)
+            for student in form.absent_student_list.data:
+                uuid = str(uuid4())
+                c = Contact(external_id=uuid,
+                            student_id=student,
+                            user_id=current_user.id,
+                            contact_date=form.contact_date.data,
+                            contact_start_time=form.contact_start_time.data,
+                            contact_end_time=form.contact_end_time.data,
+                            service_offered=form.services_offered.data,
+                            contact_type=form.contact_types.data,
+                            classroom=classroom.name,
+                            absent=True,
                             notes=form.notes.data)
                 db.session.add(c)
             db.session.commit()
@@ -399,3 +424,100 @@ def delete_contact_types(external_id):
     db.session.query(ContactType).filter(ContactType.external_id == external_id).delete()
     db.session.commit()
     return redirect(url_for('main.contact_types'))
+
+
+@bp.route("/contacts/<string:external_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_contact(external_id):
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    print(user)
+    form = PostEditContact()
+
+    c = db.session.query(Contact).filter(Contact.external_id == external_id).one()
+    ct = db.session.query(ContactType).all()
+    so = db.session.query(ServiceOffered).all()
+
+    # TODO: These check and add blocks of logic should be broken into their own subroutine!
+    # Check if contact type in this contact exists already
+    contact_type_exists = False
+    for contact_type in ct:
+        if contact_type.name == c.contact_type:
+            contact_type_exists = True
+            break
+
+    # If the contact type doesn't exist in our list (IT MAY HAVE BEEN REMOVED!), add it
+    if not contact_type_exists:
+        ct.append(ContactType(name=c.contact_type))
+
+    # Sort the list alphabetically
+    ct.sort(key=lambda x: x.name, reverse=False)
+
+    # Add the items in the list to the select list
+    form.contact_types.choices = [(g.name, g.name) for g in ct]
+
+    # TODO: Duplicated logic!
+    # Check if service offered in this contact exists already
+    service_offered_exists = False
+    for service_offered in so:
+        if service_offered.name == c.service_offered:
+            service_offered_exists = True
+            break
+
+    # If the service offered doesn't exist in our list (IT MAY HAVE BEEN REMOVED!), add it
+    if not service_offered_exists:
+        so.append(ServiceOffered(name=c.service_offered))
+
+    # Sort the list alphabetically
+    so.sort(key=lambda x: x.name, reverse=False)
+
+    # Add the items in the list to the select list
+    form.services_offered.choices = [(g.name, g.name) for g in so]
+
+    # TODO: Not the exact same logic as above, but with some refactoring something can be done I'm sure
+    cl = c.student.classrooms
+    number_of_classrooms = len(cl)
+    if number_of_classrooms == 0:
+        cl = db.session.query(Classroom).all()
+
+    classroom_exists = False
+    for classroom in cl:
+        if classroom.name == c.classroom:
+            classroom_exists = True
+            break
+
+    # If the classroom doesn't exist in our list (IT MAY HAVE BEEN REMOVED!), add it
+    if not classroom_exists:
+        cl.append(Classroom(name=c.classroom))
+
+    # Sort the list alphabetically
+    cl.sort(key=lambda x: x.name, reverse=False)
+
+    form.classroom_list.choices = [(g.name, g.name) for g in cl]
+
+    if form.validate_times():
+        if form.validate_on_submit():
+            db.session.query(Contact).filter(Contact.external_id == external_id)\
+                .update({Contact.contact_date: form.contact_date.data,
+                         Contact.contact_start_time: form.contact_start_time.data,
+                         Contact.contact_end_time: form.contact_end_time.data,
+                         Contact.service_offered: form.services_offered.data,
+                         Contact.contact_type: form.contact_types.data,
+                         Contact.classroom: form.classroom_list.data,
+                         Contact.notes: form.notes.data,
+                         Contact.absent: form.absent.data}, synchronize_session=False)
+            db.session.commit()
+            return redirect(url_for('main.index'))
+    else:
+        print("Start time is greater than end time")
+
+    form.contact_types.data = c.contact_type
+    form.services_offered.data = c.service_offered
+    form.classroom_list.data = c.classroom
+    form.contact_date.data = c.contact_date
+    form.contact_start_time.data = c.contact_start_time
+    form.contact_end_time.data = c.contact_end_time
+    form.notes.data = c.notes
+    form.absent.data = c.absent
+
+    return render_template("edit_contact.html", title='Edit Contact', user=user, contact=c, form=form)
+

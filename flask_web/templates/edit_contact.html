@@ -5,8 +5,8 @@
     <div class="col-10">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Log Contact for {{ student.first_name }} {{
-                    student.last_name
+                <h6 class="m-0 font-weight-bold text-primary">Edit Contact for {{ contact.student.first_name }} {{
+                    contact.student.last_name
                     }}</h6>
             </div>
             <div class="card-body">
@@ -60,6 +60,9 @@
                             {{ form.absent() }} {{ form.absent.label }}
                         </div>
                     </div>
+                                                    {% for error in form.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
 
                     <p>{{ form.submit(class_="btn btn-primary") }}</p>
                 </form>

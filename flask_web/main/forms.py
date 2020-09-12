@@ -47,12 +47,13 @@ class PostAddStudentsToUser(FlaskForm):
 
 class PostStudentContact(FlaskForm):
     contact_date = DateField('Contact Date', default=date.today, validators=[DataRequired()])
-    contact_start_time = TimeField('Contact Start Time', default=datetime.now(), validators=[DataRequired()])
-    contact_end_time = TimeField('Contact End Time', default=datetime.now(), validators=[DataRequired()])
+    contact_start_time = TimeField('Start Time', default=datetime.now(), validators=[DataRequired()])
+    contact_end_time = TimeField('End Time', default=datetime.now(), validators=[DataRequired()])
     contact_types = SelectField('Contact Type', validators=[DataRequired()])
     services_offered = SelectField('Service Offered', validators=[DataRequired()])
     classroom_list = SelectField('Classes', validators=[DataRequired()])
     notes = TextAreaField('Additional Notes', validators=[Length(max=4000)])
+    absent = BooleanField('Absent')
     submit = SubmitField('Add')
 
     def validate_times(self):
@@ -63,10 +64,11 @@ class PostStudentContact(FlaskForm):
 
 
 class PostClassContact(FlaskForm):
-    student_list = SelectMultipleField('Students', validators=[DataRequired()])
+    student_list = SelectMultipleField('Students', validators=[DataRequired()], id="select_student")
+    absent_student_list = SelectMultipleField('Absent Students', id="select_absent")
     contact_date = DateField('Contact Date', default=date.today, validators=[DataRequired()])
-    contact_start_time = TimeField('Contact Start Time', default=datetime.now(), validators=[DataRequired()])
-    contact_end_time = TimeField('Contact End Time', default=datetime.now(), validators=[DataRequired()])
+    contact_start_time = TimeField('Start Time', default=datetime.now(), validators=[DataRequired()])
+    contact_end_time = TimeField('End Time', default=datetime.now(), validators=[DataRequired()])
     contact_types = SelectField('Contact Type', validators=[DataRequired()])
     services_offered = SelectField('Service Offered', validators=[DataRequired()])
     notes = TextAreaField('Additional Notes', validators=[Length(max=4000)])
@@ -97,3 +99,21 @@ class PostServicesOffered(FlaskForm):
 class PostServicesOfferedEdit(FlaskForm):
     name = StringField('Service Offered', validators=[DataRequired(), Length(min=1, max=64)])
     submit = SubmitField('Save')
+
+
+class PostEditContact(FlaskForm):
+    contact_date = DateField('Contact Date', default=date.today, validators=[DataRequired()])
+    contact_start_time = TimeField('Start Time', default=datetime.now(), validators=[DataRequired()])
+    contact_end_time = TimeField('End Time', default=datetime.now(), validators=[DataRequired()])
+    contact_types = SelectField('Contact Type', validators=[DataRequired()])
+    services_offered = SelectField('Service Offered', validators=[DataRequired()])
+    classroom_list = SelectField('Classes', validators=[DataRequired()])
+    notes = TextAreaField('Additional Notes', validators=[Length(max=4000)])
+    absent = BooleanField('Absent')
+    submit = SubmitField('Save')
+
+    def validate_times(self):
+        if self.contact_start_time.data > self.contact_end_time.data:
+            return False
+        else:
+            return True

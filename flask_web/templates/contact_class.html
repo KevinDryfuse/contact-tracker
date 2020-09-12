@@ -1,6 +1,68 @@
 {% extends "base.html" %}
 
 {% block content %}
+ <script>
+  function listItemChanged() {
+    var a = new Array();
+    var select_student = document.getElementById("select_student");
+    var select_absent = document.getElementById("select_absent");
+    var listLength = select_student.options.length;
+    for(var i=0;i<listLength;i++){
+        if(select_student.options[i].selected) {
+            var absentListLength = select_absent.options.length;
+            for(var x=0;x<absentListLength;x++){
+                if(select_student.options[i].value == select_absent.options[x].value) {
+                    select_absent.remove(x);
+                    absentListLength = select_absent.options.length;
+                    x=0;
+                }
+             }
+         }
+         else {
+            var doesAlreadyExist = false;
+            var absentListLength = select_absent.options.length;
+            for(var x=0;x<absentListLength;x++){
+                if(select_student.options[i].value == select_absent.options[x].value) {
+                    doesAlreadyExist = true;
+                }
+             }
+            if(doesAlreadyExist == false){
+                select_absent.add(new Option(select_student.options[i].text, select_student.options[i].value));
+            }
+         }
+    }
+
+    /* At this point we have an unsorted list of potentially absent students and we want to sort them */
+    /* For each item in the list of potentially absent students let's capture the text, value, and if it's selected in an array */
+    var absentListLength1 = select_absent.options.length;
+    for(var z=0;z<absentListLength1;z++){
+        a.push([]);
+        a[z][0] = select_absent.options[z].value;
+        a[z][1] = select_absent.options[z].text;
+        a[z][2] = select_absent.options[z].selected;
+    }
+    /* Let's clear out the listbox */
+    select_absent.options.length = 0;
+    /* And now let's sort */
+    a.sort(compareSecondColumn);
+    /* Finally, add each item in our array back into the listbox and also select the ones that were selected previously */
+    for(var x=0;x<a.length;x++){
+        select_absent.add(new Option(a[x][1], a[x][0]));
+        select_absent.options[x].selected = a[x][2];
+    }
+
+    return true;
+}
+
+function compareSecondColumn(a, b) {
+    if (a[1] === b[1]) {
+        return 0;
+    }
+    else {
+        return (a[1] < b[1]) ? -1 : 1;
+    }
+}
+  </script>
 <div class="row">
     <div class="col-10">
         <div class="card shadow mb-4">
@@ -8,12 +70,16 @@
                 <h6 class="m-0 font-weight-bold text-primary">Log Contact for Students in {{ classroom.name }}</h6>
             </div>
             <div class="card-body">
-                <form action="" method="post">
+                <form id="form1" action="" method="post">
                     {{ form.hidden_tag() }}
                     <div class="form-row">
-                        <div class="form-group col-10">
+                        <div class="form-group col-5">
                             {{ form.student_list.label }}
-                            {{ form.student_list(class_="form-control") }}
+                            {{ form.student_list(class_="form-control", onchange="listItemChanged()") }}
+                        </div>
+                        <div class="form-group col-5">
+                            {{ form.absent_student_list.label }}
+                            {{ form.absent_student_list(class_="form-control") }}
                         </div>
                     </div>
                     <!-- Divider -->

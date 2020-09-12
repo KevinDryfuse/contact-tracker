@@ -123,3 +123,4 @@ class Contact(db.Model):
     contact_type = db.Column(db.String(64))
     classroom = db.Column(db.String(64))
     notes = db.Column(db.Text)
+    absent = db.Column(db.Boolean())

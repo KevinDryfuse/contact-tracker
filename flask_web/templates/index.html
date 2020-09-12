@@ -20,6 +20,8 @@
                             <th>Type</th>
                             <th>Service</th>
                             <th>Notes</th>
+                            <th>Absent</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -32,6 +34,8 @@
                             <th>Type</th>
                             <th>Service</th>
                             <th>Notes</th>
+                            <th>Absent</th>
+                            <th></th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -45,6 +49,9 @@
                             <td>{{ contact.contact_type}}</td>
                             <td>{{ contact.service_offered }}</td>
                             <td>{{ contact.notes }}</td>
+                            <td>{{ contact.absent }}</td>
+                            <td><a class="btn btn-primary btn-sm"
+                                   href="/contacts/{{ contact.external_id }}/edit" role="button">Edit</a></td>
                         </tr>
                         {% endfor %}
                         </tbody>
