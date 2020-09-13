@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from pytz import timezone
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField, SelectField, DateField, \
@@ -46,9 +47,10 @@ class PostAddStudentsToUser(FlaskForm):
 
 
 class PostStudentContact(FlaskForm):
-    contact_date = DateField('Contact Date', default=date.today, validators=[DataRequired()])
-    contact_start_time = TimeField('Start Time', default=datetime.now(), validators=[DataRequired()])
-    contact_end_time = TimeField('End Time', default=datetime.now(), validators=[DataRequired()])
+    tz = timezone('US/Eastern')
+    contact_date = DateField('Contact Date', default=datetime.now(tz), validators=[DataRequired()])
+    contact_start_time = TimeField('Start Time', default=datetime.now(tz), validators=[DataRequired()])
+    contact_end_time = TimeField('End Time', default=datetime.now(tz), validators=[DataRequired()])
     contact_types = SelectField('Contact Type', validators=[DataRequired()])
     services_offered = SelectField('Service Offered', validators=[DataRequired()])
     classroom_list = SelectField('Classes', validators=[DataRequired()])
@@ -64,11 +66,12 @@ class PostStudentContact(FlaskForm):
 
 
 class PostClassContact(FlaskForm):
+    tz = timezone('US/Eastern')
     student_list = SelectMultipleField('Students', validators=[DataRequired()], id="select_student")
     absent_student_list = SelectMultipleField('Absent Students', id="select_absent")
-    contact_date = DateField('Contact Date', default=date.today, validators=[DataRequired()])
-    contact_start_time = TimeField('Start Time', default=datetime.now(), validators=[DataRequired()])
-    contact_end_time = TimeField('End Time', default=datetime.now(), validators=[DataRequired()])
+    contact_date = DateField('Contact Date', default=datetime.now(tz), validators=[DataRequired()])
+    contact_start_time = TimeField('Start Time', default=datetime.now(tz), validators=[DataRequired()])
+    contact_end_time = TimeField('End Time', default=datetime.now(tz), validators=[DataRequired()])
     contact_types = SelectField('Contact Type', validators=[DataRequired()])
     services_offered = SelectField('Service Offered', validators=[DataRequired()])
     notes = TextAreaField('Additional Notes', validators=[Length(max=4000)])
