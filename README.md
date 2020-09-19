@@ -57,6 +57,7 @@ db.session.commit()
 * login and play
 
 ## TODO
+* Lots and Lots of tests!
 * Creating a contact starting from a class should be in alphabetical order
 * Ability to mark students as absent when creating a contact
 * Print functionality
