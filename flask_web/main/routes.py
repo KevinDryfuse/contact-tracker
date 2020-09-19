@@ -38,9 +38,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 def index():
     user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
     u = db.session.query(User).filter(User.id == current_user.id).one()
-    s = u.students
     c = u.contacts
-    return render_template("index.html", title='Dashboard', contacts=c, user=user, students=s)
+    c.sort(key=attrgetter('contact_date', 'contact_start_time'), reverse=True)
+    return render_template("index.html", title='Dashboard', contacts=c, user=user)
 
 
 # TODO: Do this later, this is not MVP .. however would like to update user info and update profile pic and stuff

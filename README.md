@@ -24,6 +24,7 @@ Currently, Proximity is a proof of concept project to validate that the speed an
 python -m venv venv
 . venv/Scripts/activate.ps1
 pip install -r requirements.txt
+flask db init
 flask db upgrade
 ```
 * Create a .flaskenv file that contains:

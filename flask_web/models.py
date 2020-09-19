@@ -39,6 +39,15 @@ class User(UserMixin, db.Model):
         lazy='select')
     contacts = relationship("Contact", back_populates="user")
 
+    def __init__(self, email, first_name, last_name, plaintext_password):
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+        self.password_hash = generate_password_hash(plaintext_password)
+
+    def set_password(self, plaintext_password):
+        self.password_hash = generate_password_hash(plaintext_password)
+
     @validates('email')
     def convert_lower(self, key, value):
         return value.lower()
