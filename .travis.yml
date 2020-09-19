@@ -4,5 +4,3 @@ install:
 script:
 # unit test
 - python -m py.test -v
-# linting test
-- flake
