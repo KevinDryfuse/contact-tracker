@@ -1,5 +1,3 @@
-import enum
-
 from sqlalchemy import Table, Column, Integer, ForeignKey
 
 from flask_web import db
