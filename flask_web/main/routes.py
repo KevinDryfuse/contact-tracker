@@ -30,7 +30,6 @@ from flask_web.models import (
     Contact
 )
 from flask_login import current_user, login_user, logout_user, login_required
-from xhtml2pdf import pisa
 
 @bp.route("/", methods=["GET"])
 @bp.route("/index", methods=["GET"])
