@@ -287,6 +287,15 @@ def contact_my_student(external_id):
     return render_template("contact_student.html", title='Log Student Contact', user=user, student=s, form=form)
 
 
+@bp.route("/mystudents/<string:external_id>/print", methods=["GET"])
+@login_required
+def print_my_student(external_id):
+    user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
+    s = db.session.query(Student).filter(Student.external_id == external_id).one()
+    title = "{}, {}".format(s.last_name, s.first_name)
+    return render_template("print_student.html", title=title, user=user, student=s)
+
+
 @bp.route("/classes/<string:external_id>/contact", methods=["GET", "POST"])
 @login_required
 def contact_my_class(external_id):
