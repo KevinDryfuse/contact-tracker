@@ -4,7 +4,7 @@ from pytz import timezone
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField, SelectField, DateField, \
     TimeField, TextAreaField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, Email
 
 
 class Login(FlaskForm):

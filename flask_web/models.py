@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from flask_web import login
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import validates, relationship
+from datetime import timedelta, datetime, time
 
 classroom_student_association_table = Table('classroom_student', db.Model.metadata,
                                             Column('classroom_id', Integer, ForeignKey('classroom.id')),

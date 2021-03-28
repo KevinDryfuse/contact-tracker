@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Proximity - Student Contact Tracker</title>
+    {% endif %}
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ url_for('static', filename='css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container">
+    <H1>{{ title }}</H1>
+                        <table class="table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Class</th>
+                            <th>Type</th>
+                            <th>Service</th>
+                            <th>Absent</th>
+                            <th>Notes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for contact in student.contacts %}
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ contact.contact_date }}</td>
+                            <td>{{ contact.contact_start_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.contact_end_time.strftime("%H:%M") }}</td>
+                            <td>{{ contact.classroom }}</td>
+                            <td>{{ contact.contact_type}}</td>
+                            <td>{{ contact.service_offered }}</td>
+                            <td>{% if contact.absent %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>{{ contact.notes }}</td>
+                        </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
+
+</body>
+
+</html>
