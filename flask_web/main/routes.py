@@ -31,6 +31,7 @@ from flask_web.models import (
 )
 from flask_login import current_user, login_user, logout_user, login_required
 
+
 @bp.route("/", methods=["GET"])
 @bp.route("/index", methods=["GET"])
 @login_required
