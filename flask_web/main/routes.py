@@ -292,6 +292,7 @@ def contact_my_student(external_id):
 def print_my_student(external_id):
     user = {"firstName": current_user.first_name, "lastName": current_user.last_name}
     s = db.session.query(Student).filter(Student.external_id == external_id).one()
+    s.contacts.sort(key=attrgetter('contact_date', 'contact_start_time'), reverse=False)
     title = "{}, {}".format(s.last_name, s.first_name)
     return render_template("print_student.html", title=title, user=user, student=s)
 
